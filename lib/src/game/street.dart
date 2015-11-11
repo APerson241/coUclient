@@ -106,7 +106,7 @@ class Street {
       audio.setSong(mapData.getSong(label));
     }
 
-/* // Not needed until we switch to stagexl
+/* // TODO: Not needed until we switch to stagexl
     // Collect the url's of each layer to load.
     int i = 0;
     for (Map layer in streetData['dynamic']['layers'].values) {

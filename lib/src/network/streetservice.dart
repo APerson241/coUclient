@@ -69,7 +69,7 @@ class StreetService {
 
 		// TODO, this should happen automatically on the Server, since it'll know which street we're on.
 		//send changeStreet to chat server
-		Map map = new Map();
+		Map map = {};
 		map["statusMessage"] = "changeStreet";
 		map["username"] = game.username;
 		map["newStreetLabel"] = label;
@@ -98,8 +98,6 @@ class StreetService {
 
 		// send data to minimap
 		minimap.changeStreet(streetAsMap);
-
-		new Asset.fromMap(streetAsMap, label);
 
 		await street.load();
 		logmessage('[StreetService] Street assembled.');

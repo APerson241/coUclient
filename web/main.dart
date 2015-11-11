@@ -116,7 +116,6 @@ part 'package:couclient/src/display/widgets/soundcloud.dart';
 
 // STREET RENDERING MODULES //
 part 'package:couclient/src/display/render/camera.dart';
-part 'package:couclient/src/display/render/deco.dart';
 part 'package:couclient/src/display/render/ladder.dart';
 part 'package:couclient/src/display/render/wall.dart';
 part 'package:couclient/src/display/render/platform.dart';
