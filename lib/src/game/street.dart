@@ -273,27 +273,6 @@ class Street {
   }
 }
 
-// Initialization, loads all the streets in our master file into memory.
-Future load_street() {
-  view.loadStatus.text = "Loading Streets";
-  // allows us to load street files as though they are json files.
-  jsonExtensions.add('street');
-
-  Completer c = new Completer();
-
-  // loads the master street json.
-  new Asset('packages/couclient/json/streets.json').load().then((Asset streetList) {
-    // Load each street file into memory. If this gets too expensive we'll move this elsewhere.
-    List toLoad = [];
-    for (String url in streetList.get().values)
-      toLoad.add(new Asset(url).load(statusElement: view.loadStatus2));
-
-    c.complete(Future.wait(toLoad));
-  });
-
-  return c.future;
-}
-
 setStreetLoading() {
   view.mapLoadingScreen.style.background =
   '-webkit-gradient(linear,left top,left bottom,color-stop(0, ' + currentStreet.street_load_color_top +
