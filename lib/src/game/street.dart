@@ -54,7 +54,6 @@ class Street {
   Stopwatch loadTime;
 
   Rectangle bounds;
-
   Street(this.streetData) {
     _tsid = streetData['tsid'];
     hub_id = streetData['hub_id'];
@@ -107,26 +106,22 @@ class Street {
       audio.setSong(mapData.getSong(label));
     }
 
-    // Collect the url's of each deco to load.
-    List decosToLoad = [];
+/* // Not needed until we switch to stagexl
+    // Collect the url's of each layer to load.
+    int i = 0;
     for (Map layer in streetData['dynamic']['layers'].values) {
+      //setLoadingPercent((streetData['dynamic']['layers'].keys.length + 1) / 100 * i);
+      i++;
       String layerName = layer['name'].replaceAll(' ', '_');
       String url = 'http://childrenofur.com/assets/streetLayers/$tsid/$layerName.png';
-      if (!decosToLoad.contains(url)) {
-        decosToLoad.add(url);
-      }
-    }
-
-    // turn them into assets
-    List assetsToLoad = [];
-    for (String deco in decosToLoad) {
-      assetsToLoad.add(new Asset(deco));
+      if (!resourceManager.containsBitmapData(layerName))
+      resourceManager.addBitmapData(layerName, url);
     }
 
     // Load each of them, and then continue.
-    Batch decos = new Batch(assetsToLoad);
-    await decos.load(setLoadingPercent);
+    await resourceManager.load();
     //Decos should all be loaded at this point//
+*/
 
     groundY = -(streetData['dynamic']['ground_y'] as num).abs();
 
@@ -171,7 +166,7 @@ class Street {
       //put the one layer image in
       try {
         String layerName = layer['name'].replaceAll(' ', '_');
-        ImageElement layerImage = ASSET[layerName].get();
+        ImageElement layerImage = new ImageElement(src: 'http://childrenofur.com/assets/streetLayers/$tsid/$layerName.png');
         layerImage.style.transform = 'translateY(${groundY}px)';
         decoCanvas.append(layerImage);
       } catch(e) {
@@ -246,6 +241,7 @@ class Street {
 
     //make sure to redraw the screen (in case of street switching)
     camera.dirty = true;
+    setLoadingPercent(100);
     loaded = true;
     // Done initializing street.
   }

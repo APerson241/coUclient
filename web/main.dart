@@ -24,6 +24,9 @@ import 'package:paper_elements/paper_toggle_button.dart';
 import 'package:couclient/src/network/metabolics.dart';
 
 // LIBRARIES //
+// Graphics, Audio, Asset loading.
+import 'package:stagexl/stagexl.dart' as xl;
+
 // Used for NumberFormat
 import 'package:intl/intl.dart';
 // SoundCloud Helper
@@ -36,6 +39,7 @@ import 'package:dnd/dnd.dart';
 // Asset Loading
 import 'package:libld/libld.dart';
 // Nice and simple asset loading.
+
 // Event Bus and Pumps // for more infomation see '/doc/pumps.md'
 import 'package:transmit/transmit.dart';
 //converting JSON to Dart objects and back
@@ -148,6 +152,7 @@ part 'package:couclient/src/display/minimap.dart';
 Storage sessionStorage = window.sessionStorage;
 Storage localStorage = window.localStorage;
 Random random = new Random();
+xl.ResourceManager resourceManager = new xl.ResourceManager();
 MapWindow mapWindow;
 NumberFormat commaFormatter = new NumberFormat("#,###");
 SoundManager audio;

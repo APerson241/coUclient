@@ -14,36 +14,39 @@ class EmoticonPicker extends Modal {
 
     prepare();
 
-    new Asset("files/emoticons/emoticons.json").load().then((Asset asset) {
-      EMOTICONS = asset.get()["names"];
+    resourceManager
+        ..addTextFile("emoticons.json", "files/emoticons/emoticons.json")
+        ..load().then((_) {
+          Map emoticonsMap = JSON.decode(resourceManager.getTextFile('emoticons.json'));
+          EMOTICONS = emoticonsMap["names"];
 
-      EMOTICONS.forEach((String emoticon) {
-        Element emoticonImage = new Element.tag("i")
-          ..classes.addAll(["emoticon", "emoticon-md", emoticon])
-          ..draggable = true;
+          EMOTICONS.forEach((String emoticon) {
+            Element emoticonImage = new Element.tag("i")
+              ..classes.addAll(["emoticon", "emoticon-md", emoticon])
+              ..draggable = true;
 
-        SpanElement emoticonButton = new SpanElement()
-          ..classes.add("ep-emoticonButton")
-          ..title = emoticon
-          ..append(emoticonImage);
-        grid.append(emoticonButton);
+            SpanElement emoticonButton = new SpanElement()
+              ..classes.add("ep-emoticonButton")
+              ..title = emoticon
+              ..append(emoticonImage);
+            grid.append(emoticonButton);
 
-        emoticonButton.onDragStart.listen((e) {
-          e.stopPropagation();
-          e.dataTransfer.effectAllowed = "copy";
-          e.dataTransfer.setData("text/plain", ":$emoticon:");
-          e.dataTransfer.setDragImage(emoticonImage, emoticonImage.clientWidth ~/ 2, -10);
+            emoticonButton.onDragStart.listen((e) {
+              e.stopPropagation();
+              e.dataTransfer.effectAllowed = "copy";
+              e.dataTransfer.setData("text/plain", ":$emoticon:");
+              e.dataTransfer.setDragImage(emoticonImage, emoticonImage.clientWidth ~/ 2, -10);
+            });
+
+            emoticonButton.onClick.listen((_) {
+              if (target.value == "" || target.value.substring(target.value.length - 1) == " ") {
+                target.value += ":$emoticon:";
+              } else {
+                target.value += " :$emoticon:";
+              }
+            });
+          });
         });
-
-        emoticonButton.onClick.listen((_) {
-          if (target.value == "" || target.value.substring(target.value.length - 1) == " ") {
-            target.value += ":$emoticon:";
-          } else {
-            target.value += " :$emoticon:";
-          }
-        });
-      });
-    });
 
     new Service(["insertEmoji"], (Map<String, dynamic> args) {
       target = args["input"];
