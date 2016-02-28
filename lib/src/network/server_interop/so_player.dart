@@ -122,6 +122,8 @@ void createOtherPlayer(Map map) {
 
 		creatingPlayer = "";
 	});
+
+	entities[otherPlayer.id] = otherPlayer;
 }
 
 updateOtherPlayer(Map map, Player otherPlayer) {
@@ -182,9 +184,9 @@ updateOtherPlayer(Map map, Player otherPlayer) {
 void removeOtherPlayer(String username) {
 	if (username == null) return;
 
+	entities.remove(otherPlayers[username].id);
 	otherPlayers.remove(username);
-	Element otherPlayer =
-	querySelector("#player-" + sanitizeName(username.replaceAll(' ', '_')));
+	Element otherPlayer = querySelector("#player-" + sanitizeName(username.replaceAll(' ', '_')));
 	if (otherPlayer != null) otherPlayer.remove();
 }
 

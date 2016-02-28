@@ -32,16 +32,20 @@ abstract class Entity {
 	}
 
 	Rectangle get entityRect {
-		if(_entityRect == null) {
-			_entityRect = new MutableRectangle(left, top, width, height);
+		if (this is Player) {
+			return (this as Player).avatarRect;
 		} else {
-			_entityRect.left = left;
-			_entityRect.top = top;
-			_entityRect.width = width;
-			_entityRect.height = height;
-		}
+			if (_entityRect == null) {
+				_entityRect = new MutableRectangle(left, top, width, height);
+			} else {
+				_entityRect.left = left;
+				_entityRect.top = top;
+				_entityRect.width = width;
+				_entityRect.height = height;
+			}
 
-		return _entityRect;
+			return _entityRect;
+		}
 	}
 
 	void render();

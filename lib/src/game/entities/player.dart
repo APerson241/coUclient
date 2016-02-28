@@ -2,7 +2,7 @@ part of couclient;
 
 Player CurrentPlayer;
 
-class Player {
+class Player extends Entity {
 	int width = 116, height = 137, speed = 300;
 	num posX, posY;
 	num yVel = 0, yAccel = -2400;
@@ -19,6 +19,7 @@ class Player {
 	int jumpcount = 0;
 	Timer jumpTimer;
 	MutableRectangle avatarRect = new MutableRectangle(0, 0, 0, 0);
+	String toString() => username;
 
 	//for testing purposes
 	//if false, player can move around with wasd and arrows, no falling
@@ -28,6 +29,8 @@ class Player {
 	CanvasElement playerCanvas;
 
 	Player(this.username) {
+		super.id = this.username;
+
 		posX = metabolics.currentStreetX;
 		posY = metabolics.currentStreetY;
 
@@ -568,5 +571,16 @@ class Player {
 		}
 
 		return bestPlatform;
+	}
+
+	@override
+	void interact(String id) {
+		if (id != game.username) {
+			List<List> actions = [
+				new Action.withName("View Profile")
+			];
+
+			inputManager.showClickMenu(null, "Player", id, actions);
+		}
 	}
 }
