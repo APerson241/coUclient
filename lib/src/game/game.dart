@@ -98,13 +98,6 @@ class Game {
 		//send and receive messages from the server about quests
 		questManager = new QuestManager();
 
-		//finally start the main game loop
-		loop(0.0);
-
-		loaded = true;
-		transmit("gameLoaded", loaded);
-		logmessage("Game loaded!");
-
 		// Tell the server when we have changed streets, and to assign us a new letter
 		new Service(["streetLoaded", "gameUnloading"], (_) {
 			if (currentStreet.useLetters) {
@@ -122,6 +115,13 @@ class Game {
 
 		// Load skills
 		Skills.loadData();
+
+		//finally start the main game loop
+		loop(0.0);
+
+		loaded = true;
+		transmit("gameLoaded", loaded);
+		logmessage("Game loaded!");
 	}
 
 	// GAME LOOP //

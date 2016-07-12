@@ -70,8 +70,9 @@ part 'package:couclient/src/network/streetservice.dart';
 // UI
 
 part 'package:couclient/src/display/buff.dart';
-part 'package:couclient/src/display/chatmessage.dart';
-part 'package:couclient/src/display/chatpanel.dart';
+part 'package:couclient/src/display/chat/chatmessage.dart';
+part 'package:couclient/src/display/chat/chatpanel.dart';
+part 'package:couclient/src/display/chat/messageparser.dart';
 part 'package:couclient/src/display/information_display.dart';
 part 'package:couclient/src/display/inv_dragging.dart';
 part 'package:couclient/src/display/loop.dart';

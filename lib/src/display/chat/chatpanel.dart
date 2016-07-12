@@ -28,7 +28,9 @@ class Chat {
 		..allowElement('span', attributes: ['style']) // Item icons
 		..allowElement('a', attributes: ['href', 'title', 'target', 'class', 'style']) // Links
 		..allowElement('i', attributes: ['class', 'title']) // Emoticons
-		..allowElement('p', attributes: ['style'])..allowElement('b')..allowElement('del')
+		..allowElement('p', attributes: ['style', 'data-player', 'data-parsed'])
+		..allowElement('b')
+		..allowElement('del')
 		..allowNavigation(new AnyUriPolicy());
 
 	// /me text
@@ -215,19 +217,8 @@ class Chat {
 				}
 			}
 		} else {
-			// Assemble chat message elements
-			String html = await chat.toHtml();
-
-			// Parse styles, links, and emoji
-			html = html.replaceAll("&lt;", "<");
-			html = html.replaceAll("&gt;", ">");
-			html = parseUrl(html);
-			html = parseEmoji(html);
-			html = parseLocationLinks(html);
-			html = parseItemLinks(html);
-
 			// Display in panel
-			dialog.appendHtml(html, validator: Chat.VALIDATOR);
+			dialog.appendHtml(chat.toElement().outerHtml, validator: Chat.VALIDATOR);
 		}
 
 		//scroll to the bottom
@@ -294,12 +285,10 @@ class Chat {
 			String randId = "alert-${(random.nextInt(999) + 100).toString()}";
 			String text = '<p class="$classes" id="$randId">$alert</p>';
 			Element dialog = conversationElement.querySelector('.dialog');
-			dialog.appendHtml(parseLocationLinks(text), validator: VALIDATOR);
+			dialog.appendHtml(text, validator: VALIDATOR);
 
 			//scroll to the bottom
 			dialog.scrollTop = dialog.scrollHeight;
-
-			updateChatLocationLinks(dialog);
 
 			return dialog.querySelector("#$randId");
 		}
@@ -315,6 +304,10 @@ class Chat {
 				..onClick.listen((MouseEvent event) => alert.click(event))
 				..style.cursor = "pointer";
 		}
+
+		AsyncChatMessageParser.parse(newMessage).then((_) {
+			updateChatLocationLinks(conversationElement.querySelector('.dialog'));
+		});
 
 		return newMessage;
 	}
@@ -605,7 +598,8 @@ class Chat {
 					CurrentPlayer.chatBubble.bubble.remove();
 				}
 				CurrentPlayer.chatBubble = new ChatBubble(
-					parseEmoji(map["message"]), CurrentPlayer, CurrentPlayer.playerParentElement);
+					map["message"], CurrentPlayer, CurrentPlayer.playerParentElement);
+				AsyncChatMessageParser.parseEmoji(CurrentPlayer?.chatBubble?.textElement);
 			}
 		}
 	}
